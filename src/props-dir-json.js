@@ -12,11 +12,6 @@ const getMethods = (obj) => {
 class SuperNumber extends Number {
   field = 0;
 
-  constructor(num) {
-    super(num);
-    this.field = 'a field';
-  }
-
   // eslint-disable-next-line class-methods-use-this
   sayHello() {
     console.log('Hello');
@@ -34,4 +29,6 @@ class SuperNumber extends Number {
 const num = new SuperNumber(1);
 console.log(getMethods(num));
 console.log(JSON.stringify(num));
+console.dir(num);
+num.field = 2;
 console.dir(num);
