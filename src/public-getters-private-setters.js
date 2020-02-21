@@ -1,20 +1,23 @@
 /* eslint-disable class-methods-use-this */
 function createPerson(name, city) {
-  // Private fields.
+  // Private. Unaccessible outside Person once createPerson ends.
   let privateName = name;
   let privateCity = city;
-
-  // Private methods.
-  const setName = (newName) => {
+  function setName(newName) {
     privateName = newName;
-  };
+  }
 
-  const setCity = (newCity) => {
+  function setCity(newCity) {
     privateCity = newCity;
-  };
+  }
 
-  // Person class.
+  // Kind of a fake Person class just to use the get/set
   class Person {
+    constructor(newName, newCity) {
+      setName(newName);
+      setCity(newCity);
+    }
+
     get name() {
       return privateName;
     }
@@ -23,6 +26,7 @@ function createPerson(name, city) {
       return privateCity;
     }
 
+    // If you don't do this, NodeJS(V8) will silently not assign the value
     set name(newName) {
       throw (new Error('Illegal statement. Trying to assign private field: "name".'));
     }
@@ -33,14 +37,29 @@ function createPerson(name, city) {
 
     doSomething() {
       setCity('New York');
-      setName('King Moulla');
+      setName('Tim');
     }
   }
 
-  // return the new Person.
+  // return the new Person which references our private fields and functions.
   return new Person(name, city);
 }
 
-const p1 = createPerson('Bob', 'Ferell');
-p1.name = 'nope';
-console.dir(p1);
+// Should work
+
+const p1 = createPerson('Bob', 'Los Angeles');
+console.log(p1.name, 'is in', p1.city);
+p1.doSomething();
+// Should NOT work.
+try {
+  p1.name = 'nope 1';
+} catch (e) {
+  console.log(e);
+}
+
+try {
+  p1.setCity('nope 2');
+} catch (e) {
+  console.log(e);
+}
+console.log(p1.name, 'is in', p1.city);
