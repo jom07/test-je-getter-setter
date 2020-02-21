@@ -1,4 +1,8 @@
 /* eslint-disable class-methods-use-this */
+
+// Using 'Hard objects' or using the craziness below
+// or experimental private fields and methods or TypeScript (better),
+// you choose.
 function createPerson(name, city) {
   // Private. Unaccessible outside Person once createPerson ends.
   let privateName = name;
